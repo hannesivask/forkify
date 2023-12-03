@@ -11,10 +11,6 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime';
 
-// if (module.hot) {
-//   module.hot.accept();
-// }
-
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
@@ -30,7 +26,6 @@ const controlRecipes = async function () {
 
     // 2. Loading recipe
     await model.loadRecipe(id);
-    // const { recipe } = model.state;
 
     // 3. Rendering recipe
     recipeView.render(model.state.recipe);
@@ -51,7 +46,6 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
 
     // 3) Render results
-    // resultsView.render(model.state.search.results);
     resultsView.render(model.getSearchResultsPage());
 
     // 4) Render initial pagination buttons
@@ -64,7 +58,6 @@ const controlSearchResults = async function () {
 const controlPagination = function (goToPage) {
   resultsView.render(model.getSearchResultsPage(goToPage));
   paginationView.render(model.state.search);
-  // console.log(`Page controller`);
 };
 
 const controlServings = function (newServings) {
@@ -72,12 +65,11 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
 
   // Update the recipeView
-  // recipeView.render(model.state.recipe);
   recipeView.update(model.state.recipe);
 };
 
 const controlAddBookmark = function () {
-  // 1) Add or remove bookmark
+  // Add or remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
 
@@ -96,8 +88,6 @@ const controlAddRecipe = async function (newRecipe) {
   try {
     // Show loading spinner
     addRecipeView.renderSpinner();
-
-    // console.log(newRecipe);
 
     // Upload new recipe data TODO
     await model.uploadRecipe(newRecipe);
@@ -125,10 +115,6 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
-const newFeature = function () {
-  console.log('Welcome to the app!');
-};
-
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -137,7 +123,6 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.anddHandlerClick(controlPagination);
   addRecipeView._addHandlerUpload(controlAddRecipe);
-  newFeature();
 };
 
 init();
